@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
     <version>${revision}</version>
     <description>A REST API to query GeoIP databases</description>
-    <url>https://github.com/shopping24/geoip-api</url>
+    <url>https://github.com/o12stack/geoip-api</url>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -27,18 +27,18 @@
     <scm>
         <connection>scm:git:git@github.com:shopping24/geoip-api.git</connection>
         <developerConnection>scm:git:git@github.com:shopping24/geoip-api.git</developerConnection>
-        <url>https://github.com/shopping24/geoip-api</url>
+        <url>https://github.com/o12stack/geoip-api</url>
         <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
         <system>GitHub Issues</system>
-        <url>https://github.com/shopping24/geoip-api/issues</url>
+        <url>https://github.com/o12stack/geoip-api/issues</url>
     </issueManagement>
 
     <organization>
-        <name>shopping24 GmbH</name>
-        <url>https://www.s24.com</url>
+        <name>Observabilitystack</name>
+        <url>https://www.o12stack.org</url>
     </organization>
 
     <developers>
@@ -52,19 +52,10 @@
             </roles>
             <timezone>+1</timezone>
         </developer>
-        <developer>
-            <id>dheid</id>
-            <name>Daniel Heid</name>
-            <email>daniel.heid@s24.com</email>
-            <roles>
-                <role>developer</role>
-            </roles>
-            <timezone>+1</timezone>
-        </developer>
     </developers>
 
     <properties>
-        <java.version>12</java.version>
+        <maven.compiler.release>11</maven.compiler.release>
         <revision>0-SNAPSHOT</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
