@@ -1,4 +1,4 @@
-FROM openjdk:11.0.7
+FROM openjdk:14.0.1
 ARG MAXMIND_LICENSE_KEY
 
 # place app
