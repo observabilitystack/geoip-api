@@ -18,7 +18,7 @@
             Updating to 2.3.5 errors in https://www.gitmemory.com/issue/spring-projects-experimental/spring-graalvm-native/332/716874128
             Updating to 2.4.0 breaks /actuator/prometheus
         -->
-        <version>2.3.4.RELEASE</version>
+        <version>2.4.0</version>
     </parent>
 
     <licenses>
