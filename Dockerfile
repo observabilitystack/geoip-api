@@ -9,7 +9,7 @@ RUN mvn clean package -DskipTests=true  && \
     mv target/geoip-api-*.jar target/geoip-api.jar
 
 # run stage
-FROM adoptopenjdk:11-jre-hotspot-focal
+FROM adoptopenjdk:16-jre-hotspot-focal
 ARG MAXMIND_LICENSE_KEY
 
 # download current maxmind databases
