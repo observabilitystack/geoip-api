@@ -142,7 +142,7 @@
                     <plugin>
                         <groupId>org.springframework.experimental</groupId>
                         <artifactId>spring-aot-maven-plugin</artifactId>
-                        <version>0.10.5</version>
+                        <version>0.11.3</version>
                         <executions>
                             <execution>
                                 <id>test-generate</id>
