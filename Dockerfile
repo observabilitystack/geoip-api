@@ -11,7 +11,7 @@ RUN mvn --batch-mode --no-transfer-progress clean package \
     mv target/geoip-api-*.jar target/geoip-api.jar
 
 # run stage
-FROM openjdk:17-jdk-slim
+FROM openjdk:18-jdk-slim
 ARG MAXMIND_LICENSE_KEY
 ARG CREATED_AT
 ARG VERSION
