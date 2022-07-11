@@ -19,7 +19,7 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
 RUN mvn --batch-mode --no-transfer-progress clean package -Pnative -DskipTests=true -Drevision=${VERSION}
 
 # run stage
-FROM oraclelinux:8-slim
+FROM oraclelinux:9-slim
 ARG MAXMIND_LICENSE_KEY
 ARG CREATED_AT
 ARG VERSION
