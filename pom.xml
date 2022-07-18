@@ -67,7 +67,7 @@
         <start-class>com.s24.geoip.GeoIpApi</start-class>
 
         <!-- We cannot jump on the 0.11 release train for now -->
-        <spring-native.version>0.10.6</spring-native.version>
+        <spring-native.version>0.12.1</spring-native.version>
     </properties>
 
     <!-- for spring-native -->
