@@ -164,8 +164,8 @@
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
-                        <!-- latest possible version is 0.9.9 -->
-                        <version>0.9.9</version>
+                        <!-- latest possible version is 0.9.14 -->
+                        <version>0.9.14</version>
                         <executions>
                             <execution>
                                 <id>test-native</id>
