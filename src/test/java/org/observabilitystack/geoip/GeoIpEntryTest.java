@@ -1,9 +1,10 @@
-package com.s24.geoip;
+package org.observabilitystack.geoip;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
+import org.observabilitystack.geoip.GeoIpEntry;
 
 public class GeoIpEntryTest {
 

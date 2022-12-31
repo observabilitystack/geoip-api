@@ -1,4 +1,4 @@
-package com.s24.geoip;
+package org.observabilitystack.geoip;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,6 +28,8 @@ import com.maxmind.geoip2.record.Traits;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.observabilitystack.geoip.GeoIpEntry;
+import org.observabilitystack.geoip.MaxmindGeolocationDatabase;
 
 public class MaxmindGeolocationDatabaseTest {
 

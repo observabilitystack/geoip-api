@@ -1,30 +1,24 @@
-package com.s24.geoip;
+package org.observabilitystack.geoip;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportRuntimeHints;
 
 import com.maxmind.db.CHMCache;
 import com.maxmind.geoip2.DatabaseReader;
 
-//@TypeHint(typeNames = "org.springframework.context.annotation.ProfileCondition",
-//    types={
-//        GeoIpEntry.class, CityResponse.class, City.class, Continent.class,
-//        Location.class, Postal.class, Country.class, RepresentedCountry.class,
-//        Subdivision.class, Traits.class, NetworkDeserializer.class, Metadata.class,
-//        AsnResponse.class, Network.class, IspResponse.class
-//    })
 @SpringBootApplication(proxyBeanMethods = false)
+@ImportRuntimeHints(NativeImageConfiguration.class)
 public class GeoIpApi {
 
     private static final Logger logger = LoggerFactory.getLogger(GeoIpApi.class);
@@ -46,21 +40,31 @@ public class GeoIpApi {
     }
 
     @Bean(name = "cityDatabaseReader")
-    @ConditionalOnProperty("CITY_DB_FILE")
-    public DatabaseReader cityDatabaseReader(@Value("${CITY_DB_FILE}") String dbFileName) throws IOException {
-        return buildDatabaseReader(dbFileName);
+    //@ConditionalOnProperty("CITY_DB_FILE")
+    public DatabaseReader cityDatabaseReader() throws IOException {
+        return buildDatabaseReaderFromEnvironment("CITY_DB_FILE");
     }
 
     @Bean(name = "asnDatabaseReader")
-    @ConditionalOnProperty("ASN_DB_FILE")
-    public DatabaseReader asnDatabaseReader(@Value("${ASN_DB_FILE}") String dbFileName) throws IOException {
-        return buildDatabaseReader(dbFileName);
+    //@ConditionalOnProperty("ASN_DB_FILE")
+    public DatabaseReader asnDatabaseReader() throws IOException {
+        return buildDatabaseReaderFromEnvironment("ASN_DB_FILE");
     }
 
     @Bean(name = "ispDatabaseReader")
-    @ConditionalOnProperty("ISP_DB_FILE")
-    public DatabaseReader ispDatabaseReader(@Value("${ISP_DB_FILE}") String dbFileName) throws IOException {
-        return buildDatabaseReader(dbFileName);
+    //@ConditionalOnProperty("ISP_DB_FILE")
+    public DatabaseReader ispDatabaseReader() throws IOException {
+        return buildDatabaseReaderFromEnvironment("ISP_DB_FILE");
+    }
+
+    private DatabaseReader buildDatabaseReaderFromEnvironment(String environment) throws IOException {
+        Optional<String> filename = Optional.ofNullable(System.getenv(environment));
+
+        if (filename.isPresent()) {
+            return buildDatabaseReader(filename.get());
+        }
+
+        return null;
     }
 
     private DatabaseReader buildDatabaseReader(String fileName) throws IOException {

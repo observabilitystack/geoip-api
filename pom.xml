@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.s24</groupId>
+    <groupId>org.observabilitystack</groupId>
     <artifactId>geoip-api</artifactId>
     <name>GeoIP-API</name>
     <packaging>jar</packaging>
@@ -11,13 +11,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
     </parent>
 
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
         <java.version>17</java.version>
-        <start-class>com.s24.geoip.GeoIpApi</start-class>
+        <start-class>org.observabilitystack.geoip.GeoIpApi</start-class>
     </properties>
 
     <dependencies>
@@ -62,6 +62,19 @@
             <plugin>
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
+                <!--
+                    Static linking and musl is not supported
+                    on arm64 yet
+                    @see https://www.graalvm.org/latest/reference-manual/native-image/metadata/Compatibility/
+                -->
+                <!--
+                <configuration>
+                    <buildArgs>
+                        <arg>- -static</arg>
+                        <arg>- -libc=musl</arg>
+                    </buildArgs>
+                </configuration>
+                -->
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

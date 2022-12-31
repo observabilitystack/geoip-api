@@ -1,4 +1,4 @@
-package com.s24.geoip.web;
+package org.observabilitystack.geoip.web;
 
 /**
  * Thrown if the REST API is called with an invalid IP address.

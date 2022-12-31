@@ -1,4 +1,4 @@
-package com.s24.geoip.web;
+package org.observabilitystack.geoip.web;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -11,11 +11,11 @@ import java.net.InetAddress;
 import java.util.Optional;
 
 import com.google.common.net.InetAddresses;
-import com.s24.geoip.GeoIpEntry;
-import com.s24.geoip.GeolocationProvider;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.observabilitystack.geoip.GeoIpEntry;
+import org.observabilitystack.geoip.GeolocationProvider;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;

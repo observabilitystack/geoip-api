@@ -1,4 +1,4 @@
-package com.s24.geoip.web;
+package org.observabilitystack.geoip.web;
 
 import java.beans.PropertyEditorSupport;
 

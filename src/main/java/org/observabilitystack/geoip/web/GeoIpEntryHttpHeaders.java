@@ -1,9 +1,8 @@
-package com.s24.geoip.web;
+package org.observabilitystack.geoip.web;
 
 import java.util.Objects;
 
-import com.s24.geoip.GeoIpEntry;
-
+import org.observabilitystack.geoip.GeoIpEntry;
 import org.springframework.http.HttpHeaders;
 
 public class GeoIpEntryHttpHeaders extends HttpHeaders {

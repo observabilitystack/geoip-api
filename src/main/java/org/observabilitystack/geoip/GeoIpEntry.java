@@ -1,4 +1,4 @@
-package com.s24.geoip;
+package org.observabilitystack.geoip;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;

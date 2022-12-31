@@ -1,4 +1,4 @@
-package com.s24.geoip;
+package org.observabilitystack.geoip;
 
 public class LookupException
     extends RuntimeException {

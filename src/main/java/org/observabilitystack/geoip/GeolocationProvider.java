@@ -1,4 +1,4 @@
-package com.s24.geoip;
+package org.observabilitystack.geoip;
 
 import java.net.InetAddress;
 import java.util.Optional;
@@ -11,7 +11,7 @@ public interface GeolocationProvider {
     /**
      * Returns the location information for the given IP address, or {@code null} if no information was found for the
      * given address.
-     * 
+     *
      * @param addr
      *            the IP address.
      */

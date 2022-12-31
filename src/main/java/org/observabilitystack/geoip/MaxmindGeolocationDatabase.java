@@ -1,9 +1,11 @@
-package com.s24.geoip;
+package org.observabilitystack.geoip;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Objects;
 import java.util.Optional;
+
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.AddressNotFoundException;

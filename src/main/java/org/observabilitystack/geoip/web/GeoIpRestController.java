@@ -1,7 +1,4 @@
-package com.s24.geoip.web;
-
-import com.s24.geoip.GeoIpEntry;
-import com.s24.geoip.GeolocationProvider;
+package org.observabilitystack.geoip.web;
 
 import java.net.InetAddress;
 import java.util.Optional;
@@ -18,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.observabilitystack.geoip.GeoIpEntry;
+import org.observabilitystack.geoip.GeolocationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

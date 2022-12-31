@@ -1,6 +1,13 @@
 CHANGELOG GEOIP-API
 ===================
 
+2023-01 (2022-12-31)
+-------------------
+
+* Update to Spring Boot 3.0.1
+* Native build is the default build
+* Use graalvm-maven-builder builder image
+
 2021-46 (2021-11-17)
 -------------------
 
