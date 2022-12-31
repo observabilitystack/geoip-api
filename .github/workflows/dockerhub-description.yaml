@@ -11,7 +11,7 @@ jobs:
   dockerhub-description:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Update Docker Hub description
       uses: peter-evans/dockerhub-description@v2
