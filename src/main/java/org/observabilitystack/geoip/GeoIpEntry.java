@@ -25,12 +25,12 @@ public class GeoIpEntry {
     private final String timezone;
     private final String isp;
     private final String organization;
-    private final Integer asn;
+    private final Long asn;
     private final String asnOrganization;
 
     private GeoIpEntry(String country, String stateprov, String stateprovCode, String city,
                        String latitude, String longitude, String continent, String timezone,
-                       String isp, String organization, Integer asn, String asnOrganization) {
+                       String isp, String organization, Long asn, String asnOrganization) {
         this.country = country;
         this.stateprov = stateprov;
         this.stateprovCode = stateprovCode;
@@ -85,7 +85,7 @@ public class GeoIpEntry {
         return organization;
     }
 
-    public Integer getAsn() {
+    public Long getAsn() {
         return asn;
     }
 
@@ -125,7 +125,7 @@ public class GeoIpEntry {
         private String timezone;
         private String isp;
         private String organization;
-        private Integer asn;
+        private Long asn;
         private String asnOrganization;
 
         public Builder setCountry(String country) {
@@ -176,7 +176,7 @@ public class GeoIpEntry {
             return this;
         }
 
-        public Builder setAsn(Integer asn) {
+        public Builder setAsn(Long asn) {
             this.asn = asn;
             return this;
         }

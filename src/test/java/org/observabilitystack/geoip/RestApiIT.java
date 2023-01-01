@@ -49,7 +49,7 @@ public class RestApiIT {
     public void setUp() throws Exception {
         when(cityDatabaseReader.city(eq(InetAddresses.forString("192.0.2.1")))).thenReturn(
                 new CityResponse(null, null,
-                        new Country(null, 0, 0, "ZZ", null),
+                        new Country(),
                         null, null, null, null, null, null, null));
         when(cityDatabaseReader.city(not(eq(InetAddresses.forString("192.0.2.1")))))
                 .thenThrow(new AddressNotFoundException("test"));
@@ -61,7 +61,7 @@ public class RestApiIT {
         ResponseEntity<Map> response = restTemplate.getForEntity(REST_URL, Map.class, "192.0.2.1");
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
-        assertThat(response.getBody().get("country")).isEqualTo("ZZ");
+        assertThat(response.getBody().get("country")).isNull();
     }
 
     @Test

@@ -4,14 +4,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.net.InetAddresses;
+import com.maxmind.db.Network;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.model.AsnResponse;
 import com.maxmind.geoip2.model.CityResponse;
@@ -41,20 +44,20 @@ public class MaxmindGeolocationDatabaseTest {
     @BeforeEach
     public void setUp() throws Exception {
         List<String> locales = Collections.singletonList("DE");
-        Country country = new Country(locales, 0, 0, "DE", ImmutableMap.of("DE", "Deutschland"));
+        Country country = new Country(locales, 0, 0l, true, "DE", Map.of("DE", "Deutschland"));
         CityResponse cityResponse = new CityResponse(
-                new City(locales, 0, 0, ImmutableMap.of("DE", "Hamburg")),
-                new Continent(locales, "EU", 0, ImmutableMap.of("DE", "Europa")),
+                new City(locales, 0, 0l, Map.of("DE", "Hamburg")),
+                new Continent(locales, "EU", 0l, ImmutableMap.of("DE", "Europa")),
                 country,
                 new Location(0, 0, 53.5854, 10.0073, 0, 0, "Europe/Berlin"),
                 new MaxMind(),
                 new Postal("22301", 0),
                 null,
                 null,
-                Lists.newArrayList(new Subdivision(locales, 0, 0, "DE", ImmutableMap.of("DE", "Hamburg"))),
+                Lists.newArrayList(new Subdivision(locales, 0, 0l, "DE", ImmutableMap.of("DE", "Hamburg"))),
                 new Traits());
-        IspResponse ispResponse = new IspResponse(64512, "private use range", "192.168.1.1", "local network", "foobar");
-        AsnResponse asnResponse = new AsnResponse(64513, "private use range", "192.168.1.1");
+        IspResponse ispResponse = new IspResponse(64512l, "private use range", "192.168.1.1", "local isp", "DE", "DE", "organization", new Network(InetAddress.getByName("192.168.1.1"), 24));
+        AsnResponse asnResponse = new AsnResponse(64513l, "private use range", "192.168.1.1", new Network(InetAddress.getByName("192.168.1.1"), 24));
         when(cityDatabaseReader.city(any(InetAddress.class))).thenReturn(cityResponse);
         when(asnDatabaseReader.asn(any(InetAddress.class))).thenReturn(asnResponse);
         when(ispDatabaseReader.isp(any(InetAddress.class))).thenReturn(ispResponse);
@@ -63,7 +66,7 @@ public class MaxmindGeolocationDatabaseTest {
     @Test
     public void testEmptyResponseIsConvertedCorrectly() throws Exception {
         CityResponse emptyCityResponse = new CityResponse(null, null, null, null, null, null, null, null, null, null);
-        IspResponse emtpyIspResponse = new IspResponse(null, null, null, null, null);
+        IspResponse emtpyIspResponse = new IspResponse(null, null, null, null, null, null, null, new Network(InetAddress.getByName("192.168.1.1"), 24));
         when(cityDatabaseReader.city(any(InetAddress.class))).thenReturn(emptyCityResponse);
         when(ispDatabaseReader.isp(any(InetAddress.class))).thenReturn(emtpyIspResponse);
 
@@ -98,9 +101,9 @@ public class MaxmindGeolocationDatabaseTest {
         assertThat(geoIpEntry.getLatitude()).isEqualTo("53.5854");
         assertThat(geoIpEntry.getLongitude()).isEqualTo("10.0073");
         assertThat(geoIpEntry.getTimezone()).isEqualTo("Europe/Berlin");
-        assertThat(geoIpEntry.getIsp()).isEqualTo("local network");
-        assertThat(geoIpEntry.getOrganization()).isEqualTo("foobar");
-        assertThat(geoIpEntry.getAsn()).isEqualTo(Integer.valueOf(64512));
+        assertThat(geoIpEntry.getIsp()).isEqualTo("local isp");
+        assertThat(geoIpEntry.getOrganization()).isEqualTo("organization");
+        assertThat(geoIpEntry.getAsn()).isEqualTo(64512l);
         assertThat(geoIpEntry.getAsnOrganization()).isEqualTo("private use range");
     }
 
@@ -137,9 +140,9 @@ public class MaxmindGeolocationDatabaseTest {
         assertThat(geoIpEntry.getLatitude()).isNull();
         assertThat(geoIpEntry.getLongitude()).isNull();
         assertThat(geoIpEntry.getTimezone()).isNull();
-        assertThat(geoIpEntry.getIsp()).isEqualTo("local network");
-        assertThat(geoIpEntry.getOrganization()).isEqualTo("foobar");
-        assertThat(geoIpEntry.getAsn()).isEqualTo(Integer.valueOf(64512));
+        assertThat(geoIpEntry.getIsp()).isEqualTo("local isp");
+        assertThat(geoIpEntry.getOrganization()).isEqualTo("organization");
+        assertThat(geoIpEntry.getAsn()).isEqualTo(64512l);
         assertThat(geoIpEntry.getAsnOrganization()).isEqualTo("private use range");
     }
 
@@ -158,7 +161,7 @@ public class MaxmindGeolocationDatabaseTest {
         assertThat(geoIpEntry.getTimezone()).isNull();
         assertThat(geoIpEntry.getIsp()).isNull();
         assertThat(geoIpEntry.getOrganization()).isNull();
-        assertThat(geoIpEntry.getAsn()).isEqualTo(Integer.valueOf(64513));
+        assertThat(geoIpEntry.getAsn()).isEqualTo(64513l);
         assertThat(geoIpEntry.getAsnOrganization()).isEqualTo("private use range");
     }
 }

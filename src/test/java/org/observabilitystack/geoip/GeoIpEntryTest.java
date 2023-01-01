@@ -4,7 +4,6 @@ package org.observabilitystack.geoip;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
-import org.observabilitystack.geoip.GeoIpEntry;
 
 public class GeoIpEntryTest {
 
@@ -20,7 +19,7 @@ public class GeoIpEntryTest {
                 .setTimezone("timezoneName")
                 .setIsp("isp")
                 .setOrganization("organization")
-                .setAsn(64512)
+                .setAsn(64512l)
                 .setAsnOrganization("asnOrganization")
                 .build();
 
@@ -33,7 +32,7 @@ public class GeoIpEntryTest {
         assertThat(entry.getTimezone()).isEqualTo("timezoneName");
         assertThat(entry.getIsp()).isEqualTo("isp");
         assertThat(entry.getOrganization()).isEqualTo("organization");
-        assertThat(entry.getAsn()).isEqualTo(Integer.valueOf(64512));
+        assertThat(entry.getAsn()).isEqualTo(64512l);
         assertThat(entry.getAsnOrganization()).isEqualTo("asnOrganization");
     }
 }
