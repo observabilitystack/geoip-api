@@ -41,21 +41,6 @@ $ docker run -p 8080:8080 observabilitystack/geoip-api:latest
 * Images are available for `amd64` and `arm64` architectures.
 * Updates (data & code) are released weekly.
 
-#### Experimental `native` project build
-
-For faster startup times, you can use the `native` build. This
-version of the project is not bundled with a JDK. The Java code
-is compiled into native code providing faster launch times
-(`5ms over 1.9s`) and better overall performance and smaller
-resource footprint.
-
-```
-$ docker run -p 8080:8080 ghcr.io/observabilitystack/geoip-api:latest-native
-```
-
-> 💡 The native build will be the default build for this project
-> in 2022!
-
 ### Using a custom (commercial) database
 
 > ☝️ When running in production, using a commercial [Maxmind GeoIP2 City database](https://www.maxmind.com/en/geoip2-city) is highly recommeded due to it's increased
