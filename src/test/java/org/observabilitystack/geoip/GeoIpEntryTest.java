@@ -9,7 +9,7 @@ public class GeoIpEntryTest {
 
     @Test
     public void testGetters() {
-        GeoIpEntry entry = new GeoIpEntry.Builder()
+        GeoIpEntry entry = GeoIpEntry.builder()
                 .setCountry("country")
                 .setStateprov("region")
                 .setCity("city")
