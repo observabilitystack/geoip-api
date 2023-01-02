@@ -5,7 +5,7 @@ import java.net.InetAddress;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
+import org.observabilitystack.geoip.GeoIpEntry.GeoIpEntryBuilder;
 
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.AddressNotFoundException;
@@ -22,16 +22,17 @@ import com.maxmind.geoip2.record.Subdivision;
  * Implements {@code GeolocationProvider} by using the Maxmind GeoIP database.
  */
 public class MaxmindGeolocationDatabase
-    implements GeolocationProvider {
+        implements GeolocationProvider {
 
     private final DatabaseReader cityDatabaseReader;
     private final DatabaseReader asnDatabaseReader;
     private final DatabaseReader ispDatabaseReader;
 
-    public MaxmindGeolocationDatabase(DatabaseReader cityDatabaseReader, DatabaseReader asnDatabaseReader, DatabaseReader ispDatabaseReader) {
+    public MaxmindGeolocationDatabase(DatabaseReader cityDatabaseReader, DatabaseReader asnDatabaseReader,
+            DatabaseReader ispDatabaseReader) {
         if (cityDatabaseReader == null && ispDatabaseReader == null && asnDatabaseReader == null) {
             throw new IllegalArgumentException(
-                "At least one of cityDatabaseReader, asnDatabaseReader, ispDatabaseReader must be non-null");
+                    "At least one of cityDatabaseReader, asnDatabaseReader, ispDatabaseReader must be non-null");
         }
         this.cityDatabaseReader = cityDatabaseReader;
         this.asnDatabaseReader = asnDatabaseReader;
@@ -40,7 +41,7 @@ public class MaxmindGeolocationDatabase
 
     @Override
     public Optional<GeoIpEntry> lookup(InetAddress addr) {
-        GeoIpEntry.Builder responseBuilder = new GeoIpEntry.Builder();
+        GeoIpEntryBuilder responseBuilder = GeoIpEntry.builder();
         boolean hasCityData = lookupCityData(addr, responseBuilder);
         boolean hasAsnData = lookupAsnData(addr, responseBuilder);
         boolean hasIspData = lookupIspData(addr, responseBuilder);
@@ -50,7 +51,7 @@ public class MaxmindGeolocationDatabase
         return Optional.empty();
     }
 
-    private boolean lookupCityData(InetAddress addr, GeoIpEntry.Builder builder) {
+    private boolean lookupCityData(InetAddress addr, GeoIpEntryBuilder builder) {
         if (cityDatabaseReader == null) {
             return false;
         }
@@ -75,18 +76,23 @@ public class MaxmindGeolocationDatabase
 
             Optional.ofNullable(response.getLocation())
                     .ifPresent(
-                        location -> {
-                            Optional.ofNullable(location.getLatitude())
-                                    .map(Objects::toString)
-                                    .ifPresent(builder::setLatitude);
-                            Optional.ofNullable(location.getLongitude())
-                                    .map(Objects::toString)
-                                    .ifPresent(builder::setLongitude);
-                            Optional.ofNullable(location.getTimeZone())
-                                    .map(Objects::toString)
-                                    .ifPresent(builder::setTimezone);
-                        }
-                    );
+                            location -> {
+                                Optional.ofNullable(location.getLatitude())
+                                        .map(Objects::toString)
+                                        .ifPresent(builder::setLatitude);
+                                Optional.ofNullable(location.getLongitude())
+                                        .map(Objects::toString)
+                                        .ifPresent(builder::setLongitude);
+                                Optional.ofNullable(location.getTimeZone())
+                                        .map(Objects::toString)
+                                        .ifPresent(builder::setTimezone);
+                                Optional.ofNullable(location.getAccuracyRadius())
+                                        .ifPresent(builder::setAccuracyRadius);
+                                Optional.ofNullable(location.getPopulationDensity())
+                                        .ifPresent(builder::setPopulationDensity);
+                                Optional.ofNullable(location.getMetroCode())
+                                        .ifPresent(builder::setUsMetroCode);
+                            });
 
             return true;
 
@@ -98,7 +104,7 @@ public class MaxmindGeolocationDatabase
         }
     }
 
-    private boolean lookupIspData(InetAddress addr, GeoIpEntry.Builder builder) {
+    private boolean lookupIspData(InetAddress addr, GeoIpEntryBuilder builder) {
         if (ispDatabaseReader == null) {
             return false;
         }
@@ -106,9 +112,16 @@ public class MaxmindGeolocationDatabase
             IspResponse response = ispDatabaseReader.isp(addr);
 
             builder.setIsp(response.getIsp())
-                   .setOrganization(response.getOrganization())
-                   .setAsn(response.getAutonomousSystemNumber())
-                   .setAsnOrganization(response.getAutonomousSystemOrganization());
+                    .setOrganization(response.getOrganization())
+                    .setAsn(response.getAutonomousSystemNumber())
+                    .setAsnOrganization(response.getAutonomousSystemOrganization())
+                    .setMobileCountryCode(response.getMobileCountryCode())
+                    .setMobileNetworkCode(response.getMobileNetworkCode());
+
+            Optional.ofNullable(response.getNetwork())
+                    .map(Objects::toString)
+                    .ifPresent(builder::setAsnNetwork);
+
             return true;
 
         } catch (AddressNotFoundException e) {
@@ -119,7 +132,7 @@ public class MaxmindGeolocationDatabase
         }
     }
 
-    private boolean lookupAsnData(InetAddress addr, GeoIpEntry.Builder builder) {
+    private boolean lookupAsnData(InetAddress addr, GeoIpEntryBuilder builder) {
         if (asnDatabaseReader == null) {
             return false;
         }
@@ -127,7 +140,12 @@ public class MaxmindGeolocationDatabase
             AsnResponse response = asnDatabaseReader.asn(addr);
 
             builder.setAsn(response.getAutonomousSystemNumber())
-                   .setAsnOrganization(response.getAutonomousSystemOrganization());
+                    .setAsnOrganization(response.getAutonomousSystemOrganization());
+
+            Optional.ofNullable(response.getNetwork())
+                    .map(Objects::toString)
+                    .ifPresent(builder::setAsnNetwork);
+
             return true;
 
         } catch (AddressNotFoundException e) {
