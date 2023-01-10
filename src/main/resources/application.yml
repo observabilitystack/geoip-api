@@ -1,2 +1,2 @@
-server.http2.enabled: true
-management.endpoints.web.exposure.include: info, health, prometheus
+spring.main.banner-mode: "off"
+management.endpoints.web.exposure.include: health, prometheus
