@@ -23,7 +23,8 @@ import org.slf4j.LoggerFactory;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Provides a Geo Lookup service for IPv4 and IPv6 addresses with the help of DB-IP.
+ * Provides a Geo Lookup service for IPv4 and IPv6 addresses with the help of
+ * DB-IP.
  *
  * @author shopping24 GmbH, Torsten Bøgh Köster (@tboeghk)
  */
@@ -38,27 +39,28 @@ public class GeoIpRestController {
      * Creates a controller that serves the geolocations from the given provider.
      *
      * @param geolocations
-     *            the geolocation provider.
+     *                     the geolocation provider.
      */
     @Autowired
     public GeoIpRestController(GeolocationProvider geolocations) {
         this.geolocations = requireNonNull(geolocations);
     }
 
-    @GetMapping({"/favicon.ico", "/robots.txt"})
+    @GetMapping({ "/favicon.ico", "/robots.txt" })
     public ResponseEntity<Void> handleKnownNotFounds() {
         return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/")
-    public ResponseEntity<Void> handleHeader(@RequestHeader(name = GeoIpEntryHttpHeaders.X_GEOIP_ADDRESS, required = false) InetAddress address) {
+    public ResponseEntity<Void> handleHeader(
+            @RequestHeader(name = GeoIpEntryHttpHeaders.X_GEOIP_ADDRESS, required = false) InetAddress address) {
         if (address != null) {
             Optional<GeoIpEntry> result = geolocations.lookup(address);
 
             if (result.isPresent()) {
                 return ResponseEntity.noContent()
-                    .headers(new GeoIpEntryHttpHeaders(result.get()))
-                    .build();
+                        .headers(new GeoIpEntryHttpHeaders(result.get()))
+                        .build();
             } else {
                 return ResponseEntity.noContent().build();
             }
@@ -73,7 +75,15 @@ public class GeoIpRestController {
 
     @GetMapping("/{address:.+}")
     public ResponseEntity<GeoIpEntry> lookup(@PathVariable("address") InetAddress address) {
-        return ResponseEntity.of(geolocations.lookup(address));
+        final Optional<GeoIpEntry> entry = geolocations.lookup(address);
+
+        if (entry.isPresent()) {
+            return ResponseEntity.ok()
+            .headers(new GeoIpEntryLinkHttpHeaders(address, entry.get()))
+            .body(entry.get());
+        } else {
+            return ResponseEntity.of(entry);
+        }
     }
 
     @ExceptionHandler(InvalidIpAddressException.class)
