@@ -1,6 +1,9 @@
 package org.observabilitystack.geoip.web;
 
 import java.net.InetAddress;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.observabilitystack.geoip.GeoIpEntry;
 import org.springframework.http.HttpHeaders;
@@ -13,17 +16,18 @@ public class GeoIpEntryLinkHttpHeaders extends HttpHeaders {
     public GeoIpEntryLinkHttpHeaders(InetAddress address, GeoIpEntry entry) {
         super();
 
-        add(HttpHeaders.LINK, String.format("<https://api.abuseipdb.com/api/v2/check?ipAddress=%s>; rel=\"abuse\"",
+        final List<String> links = new LinkedList<>();
+        links.add(String.format("<https://api.abuseipdb.com/api/v2/check?ipAddress=%s>; rel=\"abuse\"",
                 address.getHostAddress()));
-        add(HttpHeaders.LINK, String.format(
-                "<https://stat.ripe.net/data/reverse-dns-ip/data.json?resource=%s>; rel=\"ripe-reverse-dns\"",
+        links.add(String.format("<https://api.abuseipdb.com/api/v2/check?ipAddress=%s>; rel=\"abuse\"",
                 address.getHostAddress()));
 
         if (entry.getAsn() != null) {
-            add(HttpHeaders.LINK,
-                    String.format("<https://stat.ripe.net/data/as-overview/data.json?resource=%s>; rel=\"ripe-asn\"",
-                            entry.getAsn()));
+            links.add(String.format("<https://stat.ripe.net/data/as-overview/data.json?resource=%s>; rel=\"ripe-asn\"",
+                    entry.getAsn()));
         }
+
+        add(HttpHeaders.LINK, links.stream().collect(Collectors.joining(", ")));
     }
 
 }
