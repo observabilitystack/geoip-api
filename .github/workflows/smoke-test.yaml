@@ -1,0 +1,22 @@
+name: daily smoke test
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 5 * * *'
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    container:
+      image: bats/bats:1.9.0
+
+    services:
+      geoip-api:
+        image: ghcr.io/${{ github.repository }}:latest
+        ports:
+          - 8080:8080
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          apk add curl jq
+          ./src/test/bats/smoke-test.sh
