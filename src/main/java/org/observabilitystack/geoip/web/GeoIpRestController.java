@@ -72,15 +72,14 @@ public class GeoIpRestController {
     /**
      * Lookup the geolocation information for an ip address.
      */
-
     @GetMapping("/{address:.+}")
     public ResponseEntity<GeoIpEntry> lookup(@PathVariable("address") InetAddress address) {
         final Optional<GeoIpEntry> entry = geolocations.lookup(address);
 
         if (entry.isPresent()) {
             return ResponseEntity.ok()
-            .headers(new GeoIpEntryLinkHttpHeaders(address, entry.get()))
-            .body(entry.get());
+                    .headers(new GeoIpEntryLinkHttpHeaders(address, entry.get()))
+                    .body(entry.get());
         } else {
             return ResponseEntity.of(entry);
         }
