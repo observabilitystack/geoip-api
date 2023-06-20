@@ -122,10 +122,6 @@ $ docker build \
     --build-arg MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY} \
     --build-arg VERSION=$(date +%Y-%V) \
     -t geoip-api:latest .
-$ docker build \
-    --build-arg MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY} \
-    --build-arg VERSION=$(date +%Y-%V) \
-    -t geoip-api:latest-native -f Dockerfile.native .
 ```
 
 If you want to build (or test) a multi-platform build, use
