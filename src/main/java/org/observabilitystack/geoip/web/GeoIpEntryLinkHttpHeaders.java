@@ -19,8 +19,6 @@ public class GeoIpEntryLinkHttpHeaders extends HttpHeaders {
         final List<String> links = new LinkedList<>();
         links.add(String.format("<https://api.abuseipdb.com/api/v2/check?ipAddress=%s>; rel=\"abuse\"",
                 address.getHostAddress()));
-        links.add(String.format("<https://api.abuseipdb.com/api/v2/check?ipAddress=%s>; rel=\"abuse\"",
-                address.getHostAddress()));
 
         if (entry.getAsn() != null) {
             links.add(String.format("<https://stat.ripe.net/data/as-overview/data.json?resource=%s>; rel=\"ripe-asn\"",

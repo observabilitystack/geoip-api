@@ -16,7 +16,7 @@ You can use this project in a microservice infrastructure if you have multiple s
 * [Using the API](#using-the-api)
 * [Kubernetes & Docker-Compose Examples](#examples)
 
-## Running the container
+## 💨 Running the container
 
 The Docker image available on Docker Hub comes bundled with a recent [GeoLite2 city database](https://dev.maxmind.com/geoip/geoip2/geolite2/). The container is built every week with a recent version of the database.
 
@@ -60,7 +60,7 @@ variables:
 The [`examples`](examples/) folder contains examples how
 to run _geoip-api_ in Docker-Compose or Kubernetes.
 
-## Using the API
+## 🤓 Using the API
 
 The prefered way to query the API is via simple HTTP GET requests. Supply
 the ip address to resolve as path variable.
@@ -73,8 +73,10 @@ $ curl -s http://localhost:8080/8.8.8.8
   "longitude": "-97.822",
   "continent": "NA",
   "timezone": "America/Chicago",
+  "accuracyRadius": 1000,
   "asn": 15169,
-  "asnOrganization": "GOOGLE"
+  "asnOrganization": "GOOGLE",
+  "asnNetwork": "8.8.8.0/24"
 }
 $ curl -s "http://localhost:8080/$(curl -s https://ifconfig.me/ip)"
 {
@@ -88,6 +90,35 @@ $ curl -s "http://localhost:8080/$(curl -s https://ifconfig.me/ip)"
   "timezone": "Europe/Berlin",
   "asn": 15943,
   "asnOrganization": "wilhelm.tel GmbH"
+}
+```
+
+### Additional data links
+
+Geoip-API returns links to extensive absuse and ripe information
+in the `Link` header. The `ripe-asn` information can be retrieved
+directly. The `abuse` link requires registration and
+[an API key for retrieval](https://docs.abuseipdb.com/#introduction).
+
+```bash
+curl  "http://localhost:8080/$(curl -s https://ifconfig.me/ip)"
+HTTP/1.1 200
+Link: <https://api.abuseipdb.com/api/v2/check?ipAddress=104.151.58.228>; rel="abuse",
+      <https://stat.ripe.net/data/as-overview/data.json?resource=8881>; rel="ripe-asn"
+
+{
+  "country": "DE",
+  "stateprov": "Land Berlin",
+  "stateprovCode": "BE",
+  "city": "Berlin",
+  "latitude": "52.5196",
+  "longitude": "13.4069",
+  "continent": "EU",
+  "timezone": "Europe/Berlin",
+  "accuracyRadius": 200,
+  "asn": 8881,
+  "asnOrganization": "1&1 Versatel Deutschland GmbH",
+  "asnNetwork": "104.151.0.0/17"
 }
 ```
 
@@ -111,7 +142,7 @@ X-Geoip-Continent: EU
 X-Geoip-Timezone: Europe/Berlin
 ```
 
-## Building the project
+## 📦 Building the project
 
 The project is built through multi stage Docker builds. You need
 a valid Maxmind lincense key to download the Geoip2 database.
@@ -135,11 +166,11 @@ $ docker buildx build \
     -t geoip-api:latest-native -f Dockerfile.native .
 ```
 
-## Contributing
+## 👋 Contributing
 
 We're looking forward to your comments, issues and pull requests!
 
-## License
+## ⚖️ License
 
 This project is licensed under the [Apache License, Version 2](http://www.apache.org/licenses/LICENSE-2.0.html).
 
