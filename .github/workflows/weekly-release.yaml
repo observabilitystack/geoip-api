@@ -27,7 +27,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - id: determine-tag-and-build-date
       name: Determine Docker tag
@@ -58,7 +58,7 @@ jobs:
     needs: build
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - id: determine-tag
       name: Determine Docker tag
