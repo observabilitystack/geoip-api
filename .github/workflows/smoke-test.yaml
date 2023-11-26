@@ -16,7 +16,7 @@ jobs:
           - 8080:8080
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: |
           apk add curl jq
           ./src/test/bats/smoke-test.sh
