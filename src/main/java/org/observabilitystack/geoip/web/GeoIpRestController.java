@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +53,7 @@ public class GeoIpRestController {
         return ResponseEntity.notFound().build();
     }
 
+    @CrossOrigin(methods = { RequestMethod.GET, RequestMethod.HEAD }, allowedHeaders = GeoIpEntryHttpHeaders.X_GEOIP_ADDRESS)
     @GetMapping("/")
     public ResponseEntity<Void> handleHeader(
             @RequestHeader(name = GeoIpEntryHttpHeaders.X_GEOIP_ADDRESS, required = false) InetAddress address) {
@@ -72,6 +75,7 @@ public class GeoIpRestController {
     /**
      * Lookup the geolocation information for an ip address.
      */
+    @CrossOrigin(methods = RequestMethod.GET)
     @GetMapping("/{address:.+}")
     public ResponseEntity<GeoIpEntry> lookup(@PathVariable("address") InetAddress address) {
         final Optional<GeoIpEntry> entry = geolocations.lookup(address);
