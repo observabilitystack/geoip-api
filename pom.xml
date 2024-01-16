@@ -68,19 +68,23 @@
             <plugin>
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
-                <!--
-                    Static linking and musl is not supported
-                    on arm64 yet
-                    @see https://www.graalvm.org/latest/reference-manual/native-image/metadata/Compatibility/
-                -->
-                <!--
                 <configuration>
                     <buildArgs>
+                        <!--
+                            Static linking and musl is not supported
+                            on arm64 yet
+                            @see https://www.graalvm.org/latest/reference-manual/native-image/metadata/Compatibility/
+                        -->
+                        <!--
                         <arg>- -static</arg>
                         <arg>- -libc=musl</arg>
+                        -->
+                        <!--
+                            Build for compatibility, allowing image to run on architectures older than the build machine.
+                        -->
+                        <buildArg>-march=compatibility</buildArg>
                     </buildArgs>
                 </configuration>
-                -->
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
