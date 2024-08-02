@@ -1,10 +1,13 @@
 package org.observabilitystack.geoip.web;
 
 import java.net.InetAddress;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -87,6 +92,29 @@ public class GeoIpRestController {
         } else {
             return ResponseEntity.of(entry);
         }
+    }
+
+    @RequestMapping(path = "/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, GeoIpEntry>> multiLookup(@RequestBody InetAddress[] ipAddresses) {
+        if (ipAddresses.length > 100) {
+        	throw new TooManyAddressesException("Only 100 address requests allowed at once");
+        }
+        
+        Map<String, GeoIpEntry> entries = new TreeMap<>();
+        for (InetAddress address : ipAddresses) {
+			Optional<GeoIpEntry> entry = geolocations.lookup(address);
+			if (entry.isPresent()) {
+				entries.put(address.getHostAddress(), entry.get());
+			}
+		}
+        return ResponseEntity.ok(entries);
+    }
+    
+    @ExceptionHandler(TooManyAddressesException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleTooManyAddressesException(TooManyAddressesException e) {
+        return e.getMessage();
     }
 
     @ExceptionHandler(InvalidIpAddressException.class)
