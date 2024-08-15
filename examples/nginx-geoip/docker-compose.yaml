@@ -4,7 +4,7 @@ version: '2.4'
 
 services:
   geoip:
-    image: geoip-api:latest
+    image: ghcr.io/observabilitystack/geoip-api:latest
     ports:
       - 8081:8080
 
