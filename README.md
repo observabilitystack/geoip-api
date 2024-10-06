@@ -142,6 +142,48 @@ X-Geoip-Continent: EU
 X-Geoip-Timezone: Europe/Berlin
 ```
 
+### Querying multiple IPs via POST
+
+```bash
+curl --location 'http://localhost:8080/' \
+--header 'Content-Type: application/json' \
+--data '[
+    "8.8.8.8",
+    "8.8.4.4"
+]'
+
+{
+  "8.8.4.4": {
+    "country":"US",
+    "latitude":"37.751",
+    "longitude":"-97.822",
+    "continent":"NA",
+    "timezone":"America/Chicago",
+    "accuracyRadius":1000,
+    "asn":15169,
+    "asnOrganization":"GOOGLE",
+    "asnNetwork":"8.8.4.0/24"
+  },
+  "8.8.8.8": {
+    "country":"US",
+    "latitude":"37.751",
+    "longitude":"-97.822",
+    "continent":"NA",
+    "timezone":"America/Chicago",
+    "accuracyRadius":1000,
+    "asn":15169,
+    "asnOrganization":"GOOGLE",
+    "asnNetwork":"8.8.8.0/24"
+  }
+}
+```
+
+Takes up to 100 addresses at once.
+
+Result will be a JSON object indexed by requested IP address.
+
+If a requested address can not be resolved, the entry will be missing in the response.
+
 ## 📦 Building the project
 
 The project is built through multi stage Docker builds. You need
