@@ -1,7 +1,7 @@
 # ---------------------------------------------------------------------
 # (1) build stage
 # ---------------------------------------------------------------------
-FROM observabilitystack/graalvm-maven-builder:21.0.1-ol9 AS builder
+FROM observabilitystack/graalvm-maven-builder:22.0.1-ol9 AS builder
 ARG MAXMIND_LICENSE_KEY
 
 ADD . /build
