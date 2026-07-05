@@ -11,12 +11,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version>
+        <version>4.1.0</version>
     </parent>
 
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
         <start-class>org.observabilitystack.geoip.GeoIpApi</start-class>
     </properties>
 
@@ -24,19 +24,19 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.2.1-jre</version>
+            <version>33.6.0-jre</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.34</version>
+            <version>1.18.46</version>
             <scope>provided</scope>
         </dependency>
 
         <!-- REST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
 
         <!-- Actuator & Prometheus -->
@@ -52,13 +52,31 @@
         <dependency>
             <groupId>com.maxmind.geoip2</groupId>
             <artifactId>geoip2</artifactId>
-            <version>4.2.0</version>
+            <version>4.3.0</version>
         </dependency>
 
         <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Boot 4: TestRestTemplate moved out of the core test module -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-resttestclient</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- provides RestTemplateBuilder for TestRestTemplate's auto-configuration -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-restclient</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Boot 4: @AutoConfigureObservability replaced by @AutoConfigureMetrics -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-micrometer-metrics-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -89,6 +107,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!--
+                Boot 4's parent only declares failsafe in pluginManagement, so the
+                integration-test/verify executions are no longer bound automatically.
+                Declaring the plugin here re-activates them (version + config inherited)
+                so `mvn verify` runs the *IT tests as it did under Boot 3.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
