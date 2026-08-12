@@ -1,2 +1,5 @@
 spring.main.banner-mode: "off"
 management.endpoints.web.exposure.include: health, prometheus
+
+# Honor PORT when set by platforms such as Dokku/Heroku; default to 8080.
+server.port: ${PORT:8080}

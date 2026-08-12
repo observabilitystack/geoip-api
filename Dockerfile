@@ -47,6 +47,6 @@ COPY --from=builder "/build/GeoLite2-ASN.mmdb" /srv/GeoLite2-ASN.mmdb
 
 ENV CITY_DB_FILE /srv/GeoLite2-City.mmdb
 ENV ASN_DB_FILE  /srv/GeoLite2-ASN.mmdb
-HEALTHCHECK --interval=5s --timeout=1s CMD curl -f http://localhost:8080/actuator/health
+HEALTHCHECK --interval=5s --timeout=1s CMD curl -f http://localhost:${PORT:-8080}/actuator/health
 EXPOSE 8080
 CMD exec /srv/geoip-api

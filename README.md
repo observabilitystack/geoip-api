@@ -51,6 +51,7 @@ variables:
 
 | Variable | Description | Default value |
 | -------- | ----------- | ------------- |
+| PORT | HTTP port the service listens on (used by platforms such as Dokku). | `8080` |
 | CITY_DB_FILE | The location of the GeoIP2 City or GeoLite2 database file. | `/srv/GeoLite2-City.mmdb` |
 | ASN_DB_FILE | The location of the GeoIP2 ASN database file. | `/srv/GeoLite2-ASN.mmdb` |
 | ISP_DB_FILE | The location of the GeoIP2 ISP database file. | (none) |
