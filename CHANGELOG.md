@@ -1,6 +1,12 @@
 CHANGELOG GEOIP-API
 ===================
 
+Unreleased
+----------
+
+* Respect optional `PORT` environment variable for the HTTP listen port
+  (defaults to `8080`), for platforms such as Dokku.
+
 2023-01 (2022-12-31)
 -------------------
 
